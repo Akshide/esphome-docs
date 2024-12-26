@@ -19,6 +19,21 @@ The communication with this component is via a :ref:`UART <uart>`.
 You must therefore have a ``uart:`` entry in your configuration with both the TX and RX pins set
 to some pins on your board and the baud rate set to 9600.
 
+To use these devices with ESPHome, you will need an RS485 to UART TTL converter. 
+If your converter does not include a built-in 120-ohm resistor, you may experience unreliable readings or "unknown" values in Home Assistant. 
+In such cases, connect a 120-ohm resistor between the A and B terminals of the RS485 bus.
+
+These sensors require an independent power supply to operate if the Test input Voltage is lower then 7v. The USB input powers the internal measurement circuit, while the RS485 communication circuit requires a separate power supply via the screw terminal block. ( tested on PZEM-017 )
+For isolation and safety, use different power sources for these circuits. For example, a 5V 1A adapter can power the USB input externally , while the RS485 input can be powered with ESP32 5V supply with a common Ground . 
+This separation helps prevent potential interference and ensures Safe operation.
+
+The PZEM-017 sensors use an external current shunt to measure current and power. The default shunt value from the factory is 100A. 
+If you need to use a different shunt (e.g., 50A, 200A, or 300A), you must configure this value using the manufacturer's provided software. 
+The shunt value must match the actual shunt installed to ensure accurate readings. 
+
+"The PZEM-003 and PZEM-014 do not require an external shunt and can measure up to 10 amps, while the PZEM-016 is an AC meter that uses a CT (current transformer)."
+
+
 .. figure:: images/pzem-dc.png
     :align: center
     :width: 80.0%
